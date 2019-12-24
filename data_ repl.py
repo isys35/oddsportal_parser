@@ -58,7 +58,10 @@ def main():
                         print(name)
                         date = col_content[0].select('p.date')[0].text
                         print(date)
-                        result = col_content[0].select('p.result')[0].text
+                        try:
+                            result = col_content[0].select('p.result')[0].text
+                        except IndexError:
+                            result = 'Canceled'
                         print(result)
                         breadcrump = soup_liga.select('#breadcrumb')
                         breadcrump_a = breadcrump[0].select('a')
@@ -69,7 +72,6 @@ def main():
                         print(country)
                         print(liga)
                         data_parsing = [name, match_url, date, result, sport, country, liga]
-                        print(data_parsing)
                         if not add_game_in_db(data_parsing):
                             continue
                         table_odds = soup_liga.select('table.table-main.detail-odds')
@@ -85,14 +87,19 @@ def main():
                             right_odds_bet = bet.select('td.right.odds')
                             odds_list = []
                             for odd in right_odds_bet:
-                                if odd.select('div')[0]['onmouseout'] == "delayHideTip()":
-                                    index = right_odds.index(odd)
-                                    hov = ActionChains(browser).move_to_element(right_odds_browser[index])
-                                    hov.perform()
-                                    content_bet = browser.page_source
-                                    soup = BS(content_bet, 'html.parser')
-                                    help_box = soup.select('span.help')[0].text
-                                    open_odds = help_box.split(' ')[-1]
+                                try:
+                                    if odd.select('div')[0]['onmouseout'] == "delayHideTip()":
+                                        index = right_odds.index(odd)
+                                        hov = ActionChains(browser).move_to_element(right_odds_browser[index])
+                                        hov.perform()
+                                        content_bet = browser.page_source
+                                        soup = BS(content_bet, 'html.parser')
+                                        help_box = soup.select('span.help')[0].text
+                                        open_odds = help_box.split(' ')[-1]
+                                        odds_list.append(open_odds)
+                                        print(open_odds)
+                                except KeyError:
+                                    open_odds = odd.select('div')[0].text
                                     odds_list.append(open_odds)
                                     print(open_odds)
                             bets_dict[bookmaker] = odds_list
@@ -119,7 +126,6 @@ def add_game_in_db(data_parsing: list):
     query = 'SELECT name,url,date,result,sport,country,liga FROM game'
     cur.execute(query)
     data_game = [[el for el in name] for name in cur.fetchall()]
-    print(data_game)
     if data_parsing in data_game:
         print('[INFO] %s игра уже есть в базе' % data_parsing[0])
         cur.close()
