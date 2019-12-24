@@ -30,6 +30,12 @@ def main():
                 soup_liga = BS(liga_request_allyears.content, 'html.parser')
                 years_menu = soup_liga.select('.main-menu2.main-menu-gray')
                 years_pages = years_menu[0].select('a')
+                browser.get('https://www.oddsportal.com' + years_pages[0]['href'])
+                content_browser = browser.page_source
+                soup_liga = BS(content_browser, 'html.parser')
+                breadcrump = soup_liga.select('#breadcrumb')
+                breadcrump_a = breadcrump[0].select('a')
+                liga = breadcrump_a[3].text
                 for page in years_pages:
                     print(page['href'])
                     browser.get('https://www.oddsportal.com' + page['href'])
@@ -67,10 +73,9 @@ def main():
                         breadcrump_a = breadcrump[0].select('a')
                         sport = breadcrump_a[1].text
                         country = breadcrump_a[2].text
-                        liga = breadcrump_a[3].text
+                        print(liga)
                         print(sport)
                         print(country)
-                        print(liga)
                         data_parsing = [name, match_url, date, result, sport, country, liga]
                         if not add_game_in_db(data_parsing):
                             continue
