@@ -176,7 +176,6 @@ def add_bet_in_db(bets_dict:dict, data_parsing: list):
     data_game_dict = {}
     for game in cur.fetchall():
         data_game_dict[game[0]] = [el for el in game[1:]]
-    print(data_game_dict)
     key_game = None
     for key, item in data_game_dict.items():
         if item == data_parsing:
@@ -215,6 +214,53 @@ def add_bookmaker_in_db(name: str):
     cur.close()
     con.close()
 
-main()
 
+def remake_data_table():
+    con = sqlite3.connect('oddsportal.db')
+    cur = con.cursor()
+    query = 'SELECT * FROM game'
+    cur.execute(query)
+    data_game = [[el for el in game] for game in cur.fetchall()]
+    cur.close()
+    con.close()
+    for game in data_game:
+        command1 = game[1].split(' - ')[0]
+        command2 = game[1].split(' - ')[1]
+        url = game[2]
+        date = game[3].split(', ')[1]
+        timematch = game[3].split(', ')[2]
+        result = game[4]
+        sport = game[5]
+        country = game[6]
+        splitdata = [' 2019', ' 2018', ' 2017', ' 2015', ' 2013', ' 2012', ' 2010', ' 2008', ' 2018/2019']
+        liga = game[7]
+        for spl in splitdata:
+            if game[7].endswith(spl):
+                liga = game[7].split(spl)[0]
+                break
+        if liga == 'Africa Cup of Nations':
+            data_out = [command1, command2, url, date, timematch, result, sport, country, liga]
+            if not check_game_in_db([data_out[0],data_out[1],data_out[2],data_out[3],data_out[4],data_out[6],data_out[7],data_out[8]]):
+                add_game_in_db(data_out)
+                con = sqlite3.connect('oddsportal.db')
+                cur = con.cursor()
+                query = 'SELECT * FROM bet WHERE game_id = ?'
+                cur.execute(query, [game[0]])
+                data_bet = [[el for el in bet] for bet in cur.fetchall()]
+                cur.close()
+                con.close()
+                con = sqlite3.connect('oddsportal.db')
+                cur = con.cursor()
+                dict_bet = {}
+                for bet in data_bet:
+                    query = 'SELECT name FROM bookmaker WHERE id = ?'
+                    cur.execute(query, [bet[1]])
+                    bookmaker = cur.fetchall()[0][0]
+                    dict_bet[bookmaker] = [bet[2], bet[3], bet[4]]
+                cur.close()
+                con.close()
+                add_bet_in_db(dict_bet,data_out)
+
+
+main()
 
