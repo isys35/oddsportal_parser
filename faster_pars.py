@@ -6,7 +6,7 @@ import sqlite3
 from selenium.webdriver.common.action_chains import ActionChains
 from selenium.common.exceptions import TimeoutException
 options = Options()
-options.headless = False
+options.headless = True
 soccer_url = 'https://www.oddsportal.com/results/#soccer'
 bookmaker_url = 'https://www.oddsportal.com/bookmakers/'
 import time
@@ -19,6 +19,7 @@ db = 'oddsportal2.db'
 
 def main():
     browser = webdriver.Firefox(options=options)
+    browser.set_window_size(1000, 1000)
     r = requests.get(soccer_url, headers=headers)
     html = BS(r.content, 'html.parser')
     body = html.select('table.table-main.sport')
@@ -66,14 +67,14 @@ def parsing_bookmaker():
             add_bookmaker_in_db(bookmaker.text)
 
 
-def check_game_in_db(data_parsing: list):
+def check_game_in_db(url: str):
     con = sqlite3.connect('oddsportal2.db')
     cur = con.cursor()
-    query = 'SELECT command1,command2,url,date,timematch,sport,country,liga FROM game'
+    query = 'SELECT url FROM game'
     cur.execute(query)
-    data_game = [[el for el in game] for game in cur.fetchall()]
-    if data_parsing in data_game:
-        print('[INFO] %s игра уже есть в базе' % str(data_parsing[0:2]))
+    data_game = [game[0] for game in cur.fetchall()]
+    if url in data_game:
+        print('[INFO] %s игра уже есть в базе' % str(url))
         cur.close()
         con.close()
         return True
@@ -83,7 +84,7 @@ def check_game_in_db(data_parsing: list):
         return False
 
 
-def get_match_data(url: str, browser: webdriver.Firefox()):
+def get_match_data(url: str, browser):
     browser.get(url)
     content_match = browser.page_source
     soup_liga = BS(content_match, 'html.parser')
@@ -93,33 +94,40 @@ def get_match_data(url: str, browser: webdriver.Firefox()):
     except IndexError:
         result = 'Canceled'
     table_odds = soup_liga.select('table.table-main.detail-odds')
-    bets = table_odds[0].select('tr.lo')
-    bets_dict = {}
-    right_odds = table_odds[0].select('td.right.odds')
-    right_odds_browser = browser.find_elements_by_css_selector('td.right.odds')
-    for bet in bets:
-        bookmaker = bet.select('a.name')[0].text
-        print(bookmaker)
-        right_odds_bet = bet.select('td.right.odds')
-        odds_list = []
-        for odd in right_odds_bet:
-            try:
-                if odd.select('div')[0]['onmouseout'] == "delayHideTip()":
-                    index = right_odds.index(odd)
-                    hov = ActionChains(browser).move_to_element(right_odds_browser[index])
-                    hov.perform()
-                    content_bet = browser.page_source
-                    soup = BS(content_bet, 'html.parser')
-                    help_box = soup.select('span.help')[0].text
-                    open_odds = help_box.split(' ')[-1]
+    if len(table_odds)>0:
+        bets = table_odds[0].select('tr.lo')
+        bets_dict = {}
+        right_odds = table_odds[0].select('td.right.odds')
+        right_odds_browser = browser.find_elements_by_css_selector('td.right.odds')
+        for bet in bets:
+            bookmaker = bet.select('a.name')[0].text
+            print(bookmaker)
+            right_odds_bet = bet.select('td.right.odds')
+            odds_list = []
+            for odd in right_odds_bet:
+                try:
+                    if odd.select('div')[0]['onmouseout'] == "delayHideTip()":
+                        index = right_odds.index(odd)
+                        hov = ActionChains(browser).move_to_element(right_odds_browser[index])
+                        hov.perform()
+                        content_bet = browser.page_source
+                        soup = BS(content_bet, 'html.parser')
+                        try:
+                            help_box = soup.select('span.help')[0].text
+                            open_odds = help_box.split(' ')[-1]
+                        except IndexError:
+                            open_odds = odd.select('div')[0].text
+                        odds_list.append(open_odds)
+                        print(open_odds)
+                except KeyError:
+                    open_odds = odd.select('div')[0].text
                     odds_list.append(open_odds)
                     print(open_odds)
-            except KeyError:
-                open_odds = odd.select('div')[0].text
-                odds_list.append(open_odds)
-                print(open_odds)
-        bets_dict[bookmaker] = odds_list
-    return [result, bets_dict]
+            bets_dict[bookmaker] = odds_list
+        return [result, bets_dict]
+    else:
+        bets_dict = {}
+        return [result, bets_dict]
 
 
 def get_liga_data_in_year(url, browser, sport, country, liga):
@@ -130,30 +138,34 @@ def get_liga_data_in_year(url, browser, sport, country, liga):
     table_matchs = soup_liga.select('#tournamentTable')[0]
     trs = table_matchs.select('tr')
     for tr in trs:
-        if tr['class'] == ['center', 'nob-border']:
-            date = tr.select('span')[0].text
-        elif 'deactivate' in tr['class']:
-            timematch = tr.select('td.table-time')[0].text
-            match_url = 'https://www.oddsportal.com' + tr.select('a')[0]['href']
-            game_name = tr.select('a')[0].text
-            command1 = game_name.split(' - ')[0]
-            command2 = game_name.split(' - ')[1]
-            check_list = [command1, command2, match_url, date, timematch, sport, country, liga]
-            if check_game_in_db(check_list):
-                continue
-            else:
-                match_data = get_match_data(match_url, browser)
-                out_match = [command1,
-                             command2,
-                             match_url,
-                             date,
-                             timematch,
-                             match_data[0],
-                             sport,
-                             country,
-                             liga]
-                add_game_in_db(out_match)
-                add_bet_in_db(match_data[1], out_match)
+        try:
+            if tr['class'] == ['center', 'nob-border']:
+                date = tr.select('span')[0].text
+            elif 'deactivate' in tr['class']:
+                timematch = tr.select('td.table-time')[0].text
+                match_url = 'https://www.oddsportal.com' + tr.select('a')[0]['href']
+                game_name = tr.select('a')[0].text
+                command1 = game_name.split(' - ')[0]
+                command2 = game_name.split(' - ')[1]
+                #check_list = [command1, command2, match_url, date, timematch, sport, country, liga]
+                if check_game_in_db(match_url):
+                    continue
+                else:
+                    match_data = get_match_data(match_url, browser)
+                    out_match = [command1,
+                                command2,
+                                match_url,
+                                date,
+                                timematch,
+                                match_data[0],
+                                sport,
+                                country,
+                                liga]
+                    print(match_url)
+                    add_game_in_db(out_match)
+                    add_bet_in_db(match_data[1], out_match)
+        except KeyError:
+            print('[WARNING] Not odds')
 
 
 def add_game_in_db(data_parsing: list):
@@ -191,7 +203,11 @@ def add_bet_in_db(bets_dict:dict, data_parsing: list):
             if bookmaker[1] == key:
                 key_bookmaker = bookmaker[0]
                 break
-        data_out = [key_bookmaker, item[0], item[1], item[2], key_game]
+        data_out = []
+        if len(item) ==3:
+            data_out = [key_bookmaker, item[0], item[1], item[2], key_game]
+        elif len(item) ==2:
+            data_out = [key_bookmaker, item[0], 0, item[1], key_game]
         cur.execute('INSERT INTO bet (bookmaker_id,p1,x,p2,game_id) VALUES(?,?,?,?,?)', data_out)
         con.commit()
         print('[INFO] Ставка добавлена в базу')
