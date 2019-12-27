@@ -6,7 +6,7 @@ from PyQt5 import QtWidgets
 from PyQt5.QtCore import QThread
 
 import mainwindow
-
+import dialog
 
 class MainApp(QtWidgets.QMainWindow, mainwindow.Ui_MainWindow):
     def __init__(self):
@@ -27,6 +27,7 @@ class MainApp(QtWidgets.QMainWindow, mainwindow.Ui_MainWindow):
         self.liga_dict = {}
         self.comboBox_2.popupAboutToBeShown.connect(self.update_combobox)
         self.pushButton_3.clicked.connect(self.filtered)
+        self.pushButton_2.clicked.connect(self.open_dialog)
 
     def update_bookmakers(self):
         print('[INFO] Берём из базы букмекерские конторы')
@@ -148,6 +149,52 @@ class MainApp(QtWidgets.QMainWindow, mainwindow.Ui_MainWindow):
                 games_out.append(game)
         self.games = games_out
         self.label.setText('Найдено матчей: ' + str(len(self.games)))
+
+    def open_dialog(self):
+        dialog = Dialog()
+        dialog.update_games(self.games)
+        dialog.exec_()
+
+
+class Dialog(QtWidgets.QDialog,dialog.Ui_Dialog):
+    def __init__(self):
+        super().__init__()
+        self.setupUi(self)
+
+    def update_games(self, games):
+        self.tableWidget.setRowCount(len(games))
+        for game in games:
+            item_index = QtWidgets.QTableWidgetItem()
+            item_index.setText(str(games.index(game)))
+            self.tableWidget.setVerticalHeaderItem(games.index(game), item_index)
+            item_command1 = QtWidgets.QTableWidgetItem()
+            item_command1.setText(game[1])
+            self.tableWidget.setItem(games.index(game), 0, item_command1)
+            item_command2 = QtWidgets.QTableWidgetItem()
+            item_command2.setText(game[2])
+            self.tableWidget.setItem(games.index(game), 1, item_command2)
+            item_url = QtWidgets.QTableWidgetItem()
+            item_url.setText(game[3])
+            self.tableWidget.setItem(games.index(game), 2, item_url)
+            item_date = QtWidgets.QTableWidgetItem()
+            item_date.setText(game[4])
+            self.tableWidget.setItem(games.index(game), 3, item_date)
+            item_time = QtWidgets.QTableWidgetItem()
+            item_time.setText(game[5])
+            self.tableWidget.setItem(games.index(game), 4, item_time)
+            item_result = QtWidgets.QTableWidgetItem()
+            item_result.setText(game[6])
+            self.tableWidget.setItem(games.index(game), 5, item_result)
+            item_sport = QtWidgets.QTableWidgetItem()
+            item_sport.setText(game[7])
+            self.tableWidget.setItem(games.index(game), 6, item_sport)
+            item_country = QtWidgets.QTableWidgetItem()
+            item_country.setText(game[8])
+            self.tableWidget.setItem(games.index(game), 7, item_country)
+            item_liga = QtWidgets.QTableWidgetItem()
+            item_liga.setText(game[9])
+            self.tableWidget.setItem(games.index(game), 8, item_liga)
+
 
 def main():
     app = QtWidgets.QApplication(sys.argv)
