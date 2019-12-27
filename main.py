@@ -26,6 +26,7 @@ class MainApp(QtWidgets.QMainWindow, mainwindow.Ui_MainWindow):
         self.games = []
         self.liga_dict = {}
         self.comboBox_2.popupAboutToBeShown.connect(self.update_combobox)
+        self.pushButton_3.clicked.connect(self.filtered)
 
     def update_bookmakers(self):
         print('[INFO] Берём из базы букмекерские конторы')
@@ -138,8 +139,15 @@ class MainApp(QtWidgets.QMainWindow, mainwindow.Ui_MainWindow):
         if self.liga_dict:
             self.comboBox_2.addItems(self.liga_dict[self.comboBox.currentText()])
 
-
-
+    def filtered(self):
+        country = self.comboBox.currentText()
+        liga = self.comboBox_2.currentText()
+        games_out = []
+        for game in self.games:
+            if game[8] == country and game[9] == liga:
+                games_out.append(game)
+        self.games = games_out
+        self.label.setText('Найдено матчей: ' + str(len(self.games)))
 
 def main():
     app = QtWidgets.QApplication(sys.argv)
