@@ -9,8 +9,6 @@ options = Options()
 options.headless = False
 soccer_url = 'https://www.oddsportal.com/results/#soccer'
 bookmaker_url = 'https://www.oddsportal.com/bookmakers/'
-import time
-
 
 headers = {
     'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:71.0) Gecko/20100101 Firefox/71.0'
