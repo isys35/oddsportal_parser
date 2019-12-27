@@ -29,10 +29,10 @@
    <widget class="QGroupBox" name="groupBox">
     <property name="geometry">
      <rect>
-      <x>0</x>
-      <y>20</y>
-      <width>241</width>
-      <height>961</height>
+      <x>10</x>
+      <y>10</y>
+      <width>351</width>
+      <height>971</height>
      </rect>
     </property>
     <property name="title">
@@ -49,13 +49,48 @@
          <rect>
           <x>0</x>
           <y>0</y>
-          <width>215</width>
-          <height>919</height>
+          <width>325</width>
+          <height>929</height>
          </rect>
         </property>
         <layout class="QVBoxLayout" name="verticalLayout">
          <item>
-          <widget class="QWidget" name="widget" native="true"/>
+          <layout class="QFormLayout" name="formLayout_2">
+           <item row="0" column="0">
+            <widget class="QLabel" name="label_11">
+             <property name="text">
+              <string/>
+             </property>
+             <property name="pixmap">
+              <pixmap>logotypes/1xbet.png</pixmap>
+             </property>
+            </widget>
+           </item>
+           <item row="0" column="1">
+            <widget class="QCheckBox" name="checkBox">
+             <property name="text">
+              <string>CheckBox</string>
+             </property>
+            </widget>
+           </item>
+           <item row="1" column="0">
+            <widget class="QLabel" name="label_12">
+             <property name="text">
+              <string/>
+             </property>
+             <property name="pixmap">
+              <pixmap>logotypes/1xstavka.png</pixmap>
+             </property>
+            </widget>
+           </item>
+           <item row="1" column="1">
+            <widget class="QCheckBox" name="checkBox_2">
+             <property name="text">
+              <string>CheckBox</string>
+             </property>
+            </widget>
+           </item>
+          </layout>
          </item>
         </layout>
        </widget>
@@ -66,9 +101,9 @@
    <widget class="QGroupBox" name="groupBox_2">
     <property name="geometry">
      <rect>
-      <x>260</x>
+      <x>370</x>
       <y>10</y>
-      <width>801</width>
+      <width>691</width>
       <height>141</height>
      </rect>
     </property>
@@ -147,9 +182,9 @@
    <widget class="QGroupBox" name="groupBox_3">
     <property name="geometry">
      <rect>
-      <x>260</x>
+      <x>370</x>
       <y>170</y>
-      <width>791</width>
+      <width>691</width>
       <height>161</height>
      </rect>
     </property>
@@ -217,8 +252,8 @@
    <widget class="QGroupBox" name="groupBox_4">
     <property name="geometry">
      <rect>
-      <x>260</x>
-      <y>328</y>
+      <x>380</x>
+      <y>340</y>
       <width>381</width>
       <height>131</height>
      </rect>
@@ -279,8 +314,8 @@
    <widget class="QWidget" name="verticalLayoutWidget">
     <property name="geometry">
      <rect>
-      <x>870</x>
-      <y>380</y>
+      <x>890</x>
+      <y>370</y>
       <width>160</width>
       <height>80</height>
      </rect>
@@ -294,6 +329,19 @@
       </widget>
      </item>
     </layout>
+   </widget>
+   <widget class="QLabel" name="label_10">
+    <property name="geometry">
+     <rect>
+      <x>310</x>
+      <y>590</y>
+      <width>158</width>
+      <height>29</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string/>
+    </property>
    </widget>
   </widget>
  </widget>

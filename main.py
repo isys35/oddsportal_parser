@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 import sys
 import sqlite3
-from PyQt5 import QtWidgets
+from PyQt5 import QtCore, QtGui, QtWidgets
 from PyQt5.QtCore import QThread
 
 import mainwindow
@@ -11,13 +11,23 @@ import dialog
 class MainApp(QtWidgets.QMainWindow, mainwindow.Ui_MainWindow):
     def __init__(self):
         super().__init__()
+        self.logotypes_path = {
+            '18bet': 'logotypes/18bet.png',
+            '1xBet': 'logotypes/1xbet.png',
+            'Asianodds': 'logotypes/assianodds.png',
+            'bet-at-home': 'logotypes/bet_at_home.png',
+            'bet365': 'logotypes/bet365.png',
+            'Bethard': 'logotypes/bethard.png',
+            'bwin': 'logotypes/bwin.png',
+            'Coolbet': 'logotypes/coolbet.png',
+            'Marathonbet': 'logotypes/marathon_bet.png',
+            'MrGreen': 'logotypes/mrgreen.png',
+            'Pinnacle': 'logotypes/pinnacle.png',
+            'Unibet': 'logotypes/unibet.png',
+            'William Hill': 'logotypes/willian_hill.png'
+        }
+
         self.setupUi(self)
-        # self.checkBox = QtWidgets.QCheckBox(self.scrollAreaWidgetContents)
-        # self.checkBox.setObjectName("checkBox")
-        # self.verticalLayout.addWidget(self.checkBox)
-        # self.widget = QtWidgets.QWidget(self.scrollAreaWidgetContents)
-        # self.widget.setObjectName("widget")
-        # self.verticalLayout.addWidget(self.widget)
         self.con = sqlite3.connect('oddsportal2.db')
         self.data_bookmaker = []
         self.checkboxlist = []
@@ -47,14 +57,16 @@ class MainApp(QtWidgets.QMainWindow, mainwindow.Ui_MainWindow):
         print('[INFO] Строим виджеты CheckBox')
         self.checkboxlist = []
         for bookmaker in data_bookmaker_checklist:
+            label = QtWidgets.QLabel(self.scrollAreaWidgetContents)
+            label.setPixmap(QtGui.QPixmap(self.logotypes_path[bookmaker[1]]))
+            self.formLayout_2.setWidget(data_bookmaker_checklist.index(bookmaker),
+                                        QtWidgets.QFormLayout.LabelRole, label)
             checkBox = QtWidgets.QCheckBox(self.scrollAreaWidgetContents)
-            checkBox.setObjectName("checkBox{}".format(str(data_bookmaker_checklist.index(bookmaker))))
             checkBox.setText(bookmaker[1] + ' (' + str(bookmaker[0])+')')
             self.checkboxlist.append(checkBox)
-            self.verticalLayout.addWidget(checkBox)
-            widget = QtWidgets.QWidget(self.scrollAreaWidgetContents)
-            widget.setObjectName("widget")
-            self.verticalLayout.addWidget(widget)
+            self.formLayout_2.setWidget(data_bookmaker_checklist.index(bookmaker),
+                                        QtWidgets.QFormLayout.FieldRole, checkBox)
+            self.verticalLayout.addLayout(self.formLayout_2)
         for check_box in self.checkboxlist:
             check_box.clicked.connect(lambda state, chck = check_box: self.unselect_allcheckbox(chck))
         self.pushButton.clicked.connect(self.find_match)
