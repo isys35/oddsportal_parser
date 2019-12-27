@@ -6,7 +6,7 @@ import sqlite3
 from selenium.webdriver.common.action_chains import ActionChains
 from selenium.common.exceptions import TimeoutException
 options = Options()
-options.headless = True
+options.headless = False
 soccer_url = 'https://www.oddsportal.com/results/#soccer'
 bookmaker_url = 'https://www.oddsportal.com/bookmakers/'
 import time
@@ -31,30 +31,31 @@ def main():
                 liga_request_allyears = requests.get('https://www.oddsportal.com' + href_liga, headers=headers)
                 soup_liga = BS(liga_request_allyears.content, 'html.parser')
                 years_menu = soup_liga.select('.main-menu2.main-menu-gray')
-                years_pages = years_menu[0].select('a')
-                browser.get('https://www.oddsportal.com' + years_pages[0]['href'])
-                content_browser = browser.page_source
-                soup_liga = BS(content_browser, 'html.parser')
-                breadcrump = soup_liga.select('#breadcrumb')
-                breadcrump_a = breadcrump[0].select('a')
-                sport = breadcrump_a[1].text
-                country = breadcrump_a[2].text
-                liga = breadcrump_a[3].text
-                for page in years_pages:
-                    year_page = 'https://www.oddsportal.com' + page['href']
-                    browser.get(year_page)
-                    try:
-                        if len(soup_liga.select('#pagination')) == 0:
-                            get_liga_data_in_year(year_page, browser, sport, country, liga)
-                        else:
-                            max_page = soup_liga.select('#pagination')[0].select('a')[-1]['x-page']
-                            p = 2
-                            while p != int(max_page):
-                                year_page_add = 'https://www.oddsportal.com' + page['href'] + '#/page/%s/' % str(p)
-                                get_liga_data_in_year(year_page_add, browser, sport, country, liga)
-                                p += 1
-                    except TimeoutException:
-                        print('[EROR] TimeoutException')
+                if years_menu:
+                    years_pages = years_menu[0].select('a')
+                    browser.get('https://www.oddsportal.com' + years_pages[0]['href'])
+                    content_browser = browser.page_source
+                    soup_liga = BS(content_browser, 'html.parser')
+                    breadcrump = soup_liga.select('#breadcrumb')
+                    breadcrump_a = breadcrump[0].select('a')
+                    sport = breadcrump_a[1].text
+                    country = breadcrump_a[2].text
+                    liga = breadcrump_a[3].text
+                    for page in years_pages:
+                        year_page = 'https://www.oddsportal.com' + page['href']
+                        browser.get(year_page)
+                        try:
+                            if len(soup_liga.select('#pagination')) == 0:
+                                get_liga_data_in_year(year_page, browser, sport, country, liga)
+                            else:
+                                max_page = soup_liga.select('#pagination')[0].select('a')[-1]['x-page']
+                                p = 2
+                                while p != int(max_page):
+                                    year_page_add = 'https://www.oddsportal.com' + page['href'] + '#/page/%s/' % str(p)
+                                    get_liga_data_in_year(year_page_add, browser, sport, country, liga)
+                                    p += 1
+                        except TimeoutException:
+                            print('[EROR] TimeoutException')
     browser.quit()
 
 
@@ -131,6 +132,7 @@ def get_match_data(url: str, browser):
 
 
 def get_liga_data_in_year(url, browser, sport, country, liga):
+    print(url)
     date = None
     browser.get(url)
     content_browser = browser.page_source
@@ -142,17 +144,19 @@ def get_liga_data_in_year(url, browser, sport, country, liga):
             if tr['class'] == ['center', 'nob-border']:
                 date = tr.select('span')[0].text
             elif 'deactivate' in tr['class']:
-                timematch = tr.select('td.table-time')[0].text
-                match_url = 'https://www.oddsportal.com' + tr.select('a')[0]['href']
-                game_name = tr.select('a')[0].text
-                command1 = game_name.split(' - ')[0]
-                command2 = game_name.split(' - ')[1]
-                #check_list = [command1, command2, match_url, date, timematch, sport, country, liga]
-                if check_game_in_db(match_url):
-                    continue
-                else:
-                    match_data = get_match_data(match_url, browser)
-                    out_match = [command1,
+                if len(tr.select('span.live-odds-ico-prev'))==0:
+                    timematch = tr.select('td.table-time')[0].text
+                    match_url = 'https://www.oddsportal.com' + tr.select('a')[0]['href']
+                    game_name = tr.select('a')[0].text
+                    print(game_name)
+                    command1 = game_name.split(' - ')[0]
+                    command2 = game_name.split(' - ')[1]
+                    #check_list = [command1, command2, match_url, date, timematch, sport, country, liga]
+                    if check_game_in_db(match_url):
+                        continue
+                    else:
+                        match_data = get_match_data(match_url, browser)
+                        out_match = [command1,
                                 command2,
                                 match_url,
                                 date,
@@ -161,9 +165,9 @@ def get_liga_data_in_year(url, browser, sport, country, liga):
                                 sport,
                                 country,
                                 liga]
-                    print(match_url)
-                    add_game_in_db(out_match)
-                    add_bet_in_db(match_data[1], out_match)
+                        print(match_url)
+                        add_game_in_db(out_match)
+                        add_bet_in_db(match_data[1], out_match)
         except KeyError:
             print('[WARNING] Not odds')
 
