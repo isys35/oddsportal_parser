@@ -226,6 +226,22 @@ class ParsingThread(QThread):
     def __init__(self):
         super().__init__()
 
+    def check_game_in_db(self, url: str):
+        con = sqlite3.connect('oddsportal2.db')
+        cur = con.cursor()
+        query = 'SELECT url FROM game'
+        cur.execute(query)
+        data_game = [game[0] for game in cur.fetchall()]
+        if url in data_game:
+            print('[INFO] %s игра уже есть в базе' % str(url))
+            cur.close()
+            con.close()
+            return True
+        else:
+            cur.close()
+            con.close()
+            return False
+
     def update_db(self):
         options = Options()
         options.headless = True
