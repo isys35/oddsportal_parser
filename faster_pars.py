@@ -5,17 +5,16 @@ from selenium.webdriver.firefox.options import Options
 import sqlite3
 from selenium.webdriver.common.action_chains import ActionChains
 from selenium.common.exceptions import TimeoutException
-options = Options()
-options.headless = False
-soccer_url = 'https://www.oddsportal.com/results/#soccer'
-bookmaker_url = 'https://www.oddsportal.com/bookmakers/'
 
-headers = {
-    'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:71.0) Gecko/20100101 Firefox/71.0'
-}
-db = 'oddsportal2.db'
+
 
 def main():
+    options = Options()
+    options.headless = False
+    soccer_url = 'https://www.oddsportal.com/results/#soccer'
+    headers = {
+        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:71.0) Gecko/20100101 Firefox/71.0'
+    }
     browser = webdriver.Firefox(options=options)
     browser.set_window_size(1000, 1000)
     r = requests.get(soccer_url, headers=headers)
@@ -55,15 +54,6 @@ def main():
                         except TimeoutException:
                             print('[EROR] TimeoutException')
     browser.quit()
-
-
-def parsing_bookmaker():
-    r = requests.get(bookmaker_url, headers=headers)
-    html = BS(r.content, 'html.parser')
-    bookmakers = html.select('a.no-ext') #
-    for bookmaker in bookmakers:
-        if bookmaker.text:
-            add_bookmaker_in_db(bookmaker.text)
 
 
 def check_game_in_db(url: str):
