@@ -7,11 +7,14 @@
     <x>0</x>
     <y>0</y>
     <width>1237</width>
-    <height>588</height>
+    <height>584</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string>Dialog</string>
+  </property>
+  <property name="toolTipDuration">
+   <number>8</number>
   </property>
   <widget class="QDialogButtonBox" name="buttonBox">
    <property name="geometry">
@@ -33,15 +36,15 @@
    <property name="geometry">
     <rect>
      <x>20</x>
-     <y>10</y>
+     <y>59</y>
      <width>1200</width>
-     <height>520</height>
+     <height>471</height>
     </rect>
    </property>
    <property name="minimumSize">
     <size>
      <width>1200</width>
-     <height>520</height>
+     <height>400</height>
     </size>
    </property>
    <property name="maximumSize">
@@ -50,9 +53,20 @@
      <height>520</height>
     </size>
    </property>
+   <property name="horizontalScrollBarPolicy">
+    <enum>Qt::ScrollBarAlwaysOff</enum>
+   </property>
+   <property name="sizeAdjustPolicy">
+    <enum>QAbstractScrollArea::AdjustToContents</enum>
+   </property>
    <column>
     <property name="text">
-     <string>Команда1</string>
+     <string>Спорт </string>
+    </property>
+   </column>
+   <column>
+    <property name="text">
+     <string>Комманда1</string>
     </property>
    </column>
    <column>
@@ -67,22 +81,12 @@
    </column>
    <column>
     <property name="text">
-     <string>Дата</string>
-    </property>
-   </column>
-   <column>
-    <property name="text">
      <string>Время</string>
     </property>
    </column>
    <column>
     <property name="text">
-     <string>Результат</string>
-    </property>
-   </column>
-   <column>
-    <property name="text">
-     <string>Спорт </string>
+     <string>Дата</string>
     </property>
    </column>
    <column>
@@ -93,6 +97,16 @@
    <column>
     <property name="text">
      <string>Чемпионат</string>
+    </property>
+   </column>
+   <column>
+    <property name="text">
+     <string>Результат</string>
+    </property>
+   </column>
+   <column>
+    <property name="text">
+     <string>URL Button</string>
     </property>
    </column>
   </widget>

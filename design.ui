@@ -7,13 +7,13 @@
     <x>0</x>
     <y>0</y>
     <width>1080</width>
-    <height>1000</height>
+    <height>800</height>
    </rect>
   </property>
   <property name="minimumSize">
    <size>
     <width>1080</width>
-    <height>1000</height>
+    <height>800</height>
    </size>
   </property>
   <property name="maximumSize">
@@ -30,9 +30,9 @@
     <property name="geometry">
      <rect>
       <x>10</x>
-      <y>10</y>
+      <y>100</y>
       <width>351</width>
-      <height>971</height>
+      <height>691</height>
      </rect>
     </property>
     <property name="title">
@@ -49,283 +49,16 @@
          <rect>
           <x>0</x>
           <y>0</y>
-          <width>325</width>
-          <height>929</height>
+          <width>329</width>
+          <height>656</height>
          </rect>
         </property>
         <layout class="QVBoxLayout" name="verticalLayout">
          <item>
-          <layout class="QFormLayout" name="formLayout_2">
-           <item row="0" column="0">
-            <widget class="QLabel" name="label_11">
-             <property name="text">
-              <string/>
-             </property>
-             <property name="pixmap">
-              <pixmap>logotypes/1xbet.png</pixmap>
-             </property>
-            </widget>
-           </item>
-           <item row="0" column="1">
-            <widget class="QCheckBox" name="checkBox">
-             <property name="text">
-              <string>CheckBox</string>
-             </property>
-            </widget>
-           </item>
-           <item row="1" column="0">
-            <widget class="QLabel" name="label_12">
-             <property name="text">
-              <string/>
-             </property>
-             <property name="pixmap">
-              <pixmap>logotypes/1xstavka.png</pixmap>
-             </property>
-            </widget>
-           </item>
-           <item row="1" column="1">
-            <widget class="QCheckBox" name="checkBox_2">
-             <property name="text">
-              <string>CheckBox</string>
-             </property>
-            </widget>
-           </item>
-          </layout>
+          <layout class="QFormLayout" name="formLayout_2"/>
          </item>
         </layout>
        </widget>
-      </widget>
-     </item>
-    </layout>
-   </widget>
-   <widget class="QGroupBox" name="groupBox_2">
-    <property name="geometry">
-     <rect>
-      <x>370</x>
-      <y>10</y>
-      <width>691</width>
-      <height>141</height>
-     </rect>
-    </property>
-    <property name="title">
-     <string>Поиск совпадений</string>
-    </property>
-    <layout class="QVBoxLayout" name="verticalLayout_7">
-     <item>
-      <layout class="QVBoxLayout" name="verticalLayout_2">
-       <item>
-        <layout class="QHBoxLayout" name="horizontalLayout">
-         <item>
-          <layout class="QVBoxLayout" name="verticalLayout_6">
-           <item>
-            <widget class="QLabel" name="label_4">
-             <property name="text">
-              <string>П1</string>
-             </property>
-             <property name="alignment">
-              <set>Qt::AlignCenter</set>
-             </property>
-            </widget>
-           </item>
-           <item>
-            <widget class="QLineEdit" name="lineEdit"/>
-           </item>
-          </layout>
-         </item>
-         <item>
-          <layout class="QVBoxLayout" name="verticalLayout_5">
-           <item>
-            <widget class="QLabel" name="label_3">
-             <property name="text">
-              <string>Х</string>
-             </property>
-             <property name="alignment">
-              <set>Qt::AlignCenter</set>
-             </property>
-            </widget>
-           </item>
-           <item>
-            <widget class="QLineEdit" name="lineEdit_2"/>
-           </item>
-          </layout>
-         </item>
-         <item>
-          <layout class="QVBoxLayout" name="verticalLayout_4">
-           <item>
-            <widget class="QLabel" name="label_2">
-             <property name="text">
-              <string>П2</string>
-             </property>
-             <property name="alignment">
-              <set>Qt::AlignCenter</set>
-             </property>
-            </widget>
-           </item>
-           <item>
-            <widget class="QLineEdit" name="lineEdit_3"/>
-           </item>
-          </layout>
-         </item>
-        </layout>
-       </item>
-       <item>
-        <widget class="QPushButton" name="pushButton">
-         <property name="text">
-          <string>Найти совпадения</string>
-         </property>
-        </widget>
-       </item>
-      </layout>
-     </item>
-    </layout>
-   </widget>
-   <widget class="QGroupBox" name="groupBox_3">
-    <property name="geometry">
-     <rect>
-      <x>370</x>
-      <y>170</y>
-      <width>691</width>
-      <height>161</height>
-     </rect>
-    </property>
-    <property name="title">
-     <string>Результат</string>
-    </property>
-    <layout class="QVBoxLayout" name="verticalLayout_8">
-     <item>
-      <layout class="QVBoxLayout" name="verticalLayout_3">
-       <item>
-        <widget class="QLabel" name="label">
-         <property name="text">
-          <string>Найдено матчей:</string>
-         </property>
-         <property name="alignment">
-          <set>Qt::AlignCenter</set>
-         </property>
-        </widget>
-       </item>
-       <item>
-        <layout class="QHBoxLayout" name="horizontalLayout_2">
-         <item>
-          <widget class="QLabel" name="label_6">
-           <property name="text">
-            <string>П1</string>
-           </property>
-           <property name="alignment">
-            <set>Qt::AlignCenter</set>
-           </property>
-          </widget>
-         </item>
-         <item>
-          <widget class="QLabel" name="label_5">
-           <property name="text">
-            <string>X</string>
-           </property>
-           <property name="alignment">
-            <set>Qt::AlignCenter</set>
-           </property>
-          </widget>
-         </item>
-         <item>
-          <widget class="QLabel" name="label_7">
-           <property name="text">
-            <string>П2</string>
-           </property>
-           <property name="alignment">
-            <set>Qt::AlignCenter</set>
-           </property>
-          </widget>
-         </item>
-        </layout>
-       </item>
-       <item>
-        <widget class="QPushButton" name="pushButton_2">
-         <property name="text">
-          <string>Показать матчи</string>
-         </property>
-        </widget>
-       </item>
-      </layout>
-     </item>
-    </layout>
-   </widget>
-   <widget class="QGroupBox" name="groupBox_4">
-    <property name="geometry">
-     <rect>
-      <x>380</x>
-      <y>340</y>
-      <width>381</width>
-      <height>131</height>
-     </rect>
-    </property>
-    <property name="title">
-     <string>Фильтр</string>
-    </property>
-    <layout class="QVBoxLayout" name="verticalLayout_12">
-     <item>
-      <layout class="QVBoxLayout" name="verticalLayout_11">
-       <item>
-        <layout class="QHBoxLayout" name="horizontalLayout_4">
-         <item>
-          <layout class="QHBoxLayout" name="horizontalLayout_3">
-           <item>
-            <layout class="QVBoxLayout" name="verticalLayout_9">
-             <item>
-              <widget class="QLabel" name="label_8">
-               <property name="text">
-                <string>Страна</string>
-               </property>
-              </widget>
-             </item>
-             <item>
-              <widget class="QComboBox" name="comboBox"/>
-             </item>
-            </layout>
-           </item>
-          </layout>
-         </item>
-         <item>
-          <layout class="QVBoxLayout" name="verticalLayout_10">
-           <item>
-            <widget class="QLabel" name="label_9">
-             <property name="text">
-              <string>Чемпионат</string>
-             </property>
-            </widget>
-           </item>
-           <item>
-            <widget class="QComboBox" name="comboBox_2"/>
-           </item>
-          </layout>
-         </item>
-        </layout>
-       </item>
-       <item>
-        <widget class="QPushButton" name="pushButton_3">
-         <property name="text">
-          <string>Применить фильтр</string>
-         </property>
-        </widget>
-       </item>
-      </layout>
-     </item>
-    </layout>
-   </widget>
-   <widget class="QWidget" name="verticalLayoutWidget">
-    <property name="geometry">
-     <rect>
-      <x>890</x>
-      <y>370</y>
-      <width>160</width>
-      <height>80</height>
-     </rect>
-    </property>
-    <layout class="QVBoxLayout" name="verticalLayout_14">
-     <item>
-      <widget class="QPushButton" name="pushButton_4">
-       <property name="text">
-        <string>Обновить базу</string>
-       </property>
       </widget>
      </item>
     </layout>
@@ -342,6 +75,224 @@
     <property name="text">
      <string/>
     </property>
+   </widget>
+   <widget class="QWidget" name="horizontalLayoutWidget">
+    <property name="geometry">
+     <rect>
+      <x>20</x>
+      <y>30</y>
+      <width>331</width>
+      <height>51</height>
+     </rect>
+    </property>
+    <layout class="QHBoxLayout" name="horizontalLayout_5">
+     <item>
+      <widget class="QPushButton" name="pushButton_4">
+       <property name="text">
+        <string>Полное обновление</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QPushButton" name="pushButton_5">
+       <property name="text">
+        <string>Обновление по последнему году</string>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </widget>
+   <widget class="QWidget" name="horizontalLayoutWidget_2">
+    <property name="geometry">
+     <rect>
+      <x>370</x>
+      <y>30</y>
+      <width>701</width>
+      <height>121</height>
+     </rect>
+    </property>
+    <layout class="QHBoxLayout" name="horizontalLayout_6">
+     <item>
+      <widget class="QGroupBox" name="groupBox_2">
+       <property name="title">
+        <string>Поиск совпадений</string>
+       </property>
+       <layout class="QVBoxLayout" name="verticalLayout_7">
+        <item>
+         <layout class="QVBoxLayout" name="verticalLayout_2">
+          <item>
+           <layout class="QHBoxLayout" name="horizontalLayout">
+            <item>
+             <layout class="QVBoxLayout" name="verticalLayout_6">
+              <item>
+               <widget class="QLabel" name="label_4">
+                <property name="text">
+                 <string>П1</string>
+                </property>
+                <property name="alignment">
+                 <set>Qt::AlignCenter</set>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QLineEdit" name="lineEdit"/>
+              </item>
+             </layout>
+            </item>
+            <item>
+             <layout class="QVBoxLayout" name="verticalLayout_5">
+              <item>
+               <widget class="QLabel" name="label_3">
+                <property name="text">
+                 <string>Х</string>
+                </property>
+                <property name="alignment">
+                 <set>Qt::AlignCenter</set>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QLineEdit" name="lineEdit_2"/>
+              </item>
+             </layout>
+            </item>
+            <item>
+             <layout class="QVBoxLayout" name="verticalLayout_4">
+              <item>
+               <widget class="QLabel" name="label_2">
+                <property name="text">
+                 <string>П2</string>
+                </property>
+                <property name="alignment">
+                 <set>Qt::AlignCenter</set>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QLineEdit" name="lineEdit_3"/>
+              </item>
+             </layout>
+            </item>
+           </layout>
+          </item>
+          <item>
+           <widget class="QPushButton" name="pushButton">
+            <property name="text">
+             <string>Найти совпадения</string>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </item>
+       </layout>
+      </widget>
+     </item>
+     <item>
+      <widget class="QGroupBox" name="groupBox_3">
+       <property name="minimumSize">
+        <size>
+         <width>350</width>
+         <height>0</height>
+        </size>
+       </property>
+       <property name="title">
+        <string>Результат</string>
+       </property>
+       <layout class="QVBoxLayout" name="verticalLayout_8">
+        <item>
+         <layout class="QVBoxLayout" name="verticalLayout_3">
+          <item>
+           <widget class="QLabel" name="label">
+            <property name="text">
+             <string>Найдено матчей:</string>
+            </property>
+            <property name="alignment">
+             <set>Qt::AlignCenter</set>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <layout class="QHBoxLayout" name="horizontalLayout_2">
+            <item>
+             <widget class="QLabel" name="label_6">
+              <property name="text">
+               <string>П1</string>
+              </property>
+              <property name="alignment">
+               <set>Qt::AlignCenter</set>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QLabel" name="label_5">
+              <property name="text">
+               <string>X</string>
+              </property>
+              <property name="alignment">
+               <set>Qt::AlignCenter</set>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QLabel" name="label_7">
+              <property name="text">
+               <string>П2</string>
+              </property>
+              <property name="alignment">
+               <set>Qt::AlignCenter</set>
+              </property>
+             </widget>
+            </item>
+           </layout>
+          </item>
+          <item>
+           <widget class="QPushButton" name="pushButton_2">
+            <property name="text">
+             <string>Показать матчи</string>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </item>
+       </layout>
+      </widget>
+     </item>
+    </layout>
+   </widget>
+   <widget class="QTableWidget" name="tableWidget">
+    <property name="geometry">
+     <rect>
+      <x>370</x>
+      <y>160</y>
+      <width>701</width>
+      <height>611</height>
+     </rect>
+    </property>
+    <column>
+     <property name="text">
+      <string>Комманда1</string>
+     </property>
+    </column>
+    <column>
+     <property name="text">
+      <string>Комманда2</string>
+     </property>
+    </column>
+    <column>
+     <property name="text">
+      <string>Дата</string>
+     </property>
+    </column>
+    <column>
+     <property name="text">
+      <string>Результат </string>
+     </property>
+    </column>
+    <column>
+     <property name="text">
+      <string>Перейти на сайт</string>
+     </property>
+    </column>
    </widget>
   </widget>
  </widget>

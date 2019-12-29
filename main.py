@@ -42,8 +42,8 @@ class MainApp(QtWidgets.QMainWindow, mainwindow.Ui_MainWindow):
         self.matches_finded = []
         self.games = []
         self.liga_dict = {}
-        self.comboBox_2.popupAboutToBeShown.connect(self.update_combobox)
-        self.pushButton_3.clicked.connect(self.filtered)
+        #self.comboBox_2.popupAboutToBeShown.connect(self.update_combobox)
+        #self.pushButton_3.clicked.connect(self.filtered)
         self.pushButton_2.clicked.connect(self.open_dialog)
         self.pushButton_4.clicked.connect(self.start_thread_parsing)
 
@@ -128,6 +128,9 @@ class MainApp(QtWidgets.QMainWindow, mainwindow.Ui_MainWindow):
                 elif float(p1_r) == float(p2_r):
                     x_out += 1
         all_out = p1_out + p2_out + x_out
+        p1_out_ = 0
+        x_out_ = 0
+        p2_out_ = 0
         if all_out:
             p1_out_ = 100 * p1_out/ all_out
             p2_out_ = 100 * p2_out / all_out
@@ -135,7 +138,7 @@ class MainApp(QtWidgets.QMainWindow, mainwindow.Ui_MainWindow):
         self.label_6.setText('П1: ' + str(round(p1_out_)) + '% ('+str(round(p1_out))+')')
         self.label_5.setText('X: ' + str(round(x_out_)) + '% ('+str(round(x_out)) +')')
         self.label_7.setText('П2: ' + str(round(p2_out_))  + '% ('+str(round(p2_out))+')')
-        self.comboBox.clear()
+        #self.comboBox.clear()
         countrys = []
         self.liga_dict = {}
         for game in self.games:
@@ -147,7 +150,7 @@ class MainApp(QtWidgets.QMainWindow, mainwindow.Ui_MainWindow):
                 if game[9] not in self.liga_dict[game[8]]:
                     self.liga_dict[game[8]].append(game[9])
         print(self.liga_dict)
-        self.comboBox.addItems(countrys)
+        #self.comboBox.addItems(countrys)
         cur.close()
 
     def unselect_allcheckbox(self, check_box):
@@ -155,20 +158,20 @@ class MainApp(QtWidgets.QMainWindow, mainwindow.Ui_MainWindow):
             if check != check_box:
                 check.setChecked(False)
 
-    def update_combobox(self):
-        self.comboBox_2.clear()
-        if self.liga_dict:
-            self.comboBox_2.addItems(self.liga_dict[self.comboBox.currentText()])
+    # def update_combobox(self):
+    #     self.comboBox_2.clear()
+    #     if self.liga_dict:
+    #         self.comboBox_2.addItems(self.liga_dict[self.comboBox.currentText()])
 
-    def filtered(self):
-        country = self.comboBox.currentText()
-        liga = self.comboBox_2.currentText()
-        games_out = []
-        for game in self.games:
-            if game[8] == country and game[9] == liga:
-                games_out.append(game)
-        self.games = games_out
-        self.label.setText('Найдено матчей: ' + str(len(self.games)))
+    # def filtered(self):
+    #     country = self.comboBox.currentText()
+    #     liga = self.comboBox_2.currentText()
+    #     games_out = []
+    #     for game in self.games:
+    #         if game[8] == country and game[9] == liga:
+    #             games_out.append(game)
+    #     self.games = games_out
+    #     self.label.setText('Найдено матчей: ' + str(len(self.games)))
 
     def open_dialog(self):
         dialog = Dialog()
