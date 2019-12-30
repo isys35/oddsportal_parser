@@ -7,8 +7,8 @@ from selenium.webdriver.common.action_chains import ActionChains
 from selenium.common.exceptions import TimeoutException
 import time
 
-class Parser:
 
+class Parser:
     def start(self):
         options = Options()
         options.headless = False
@@ -233,3 +233,88 @@ class Parser:
             print('[INFO] Букмекер %s добавлен в базу' % name)
         cur.close()
         con.close()
+
+class ParserInfo:
+    def __init__(self):
+        self.count_games = 0
+
+    def start(self):
+        options = Options()
+        options.headless = False
+        soccer_url = 'https://www.oddsportal.com/results/#soccer'
+        headers = {
+            'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:71.0) Gecko/20100101 Firefox/71.0'
+        }
+        browser = webdriver.Firefox(options=options)
+        browser.set_window_size(1000, 1000)
+        r = requests.get(soccer_url, headers=headers)
+        html = BS(r.content, 'html.parser')
+        body = html.select('table.table-main.sport')
+        ligs = body[0].select('td')
+        for lig in ligs:
+            if len(lig.select('a')) > 0:
+                href_liga = lig.select('a')[0]['href']
+                if href_liga.split('/')[1] == 'soccer':
+                    liga_request_allyears = requests.get('https://www.oddsportal.com' + href_liga, headers=headers)
+                    soup_liga = BS(liga_request_allyears.content, 'html.parser')
+                    years_menu = soup_liga.select('.main-menu2.main-menu-gray')
+                    if years_menu:
+                        years_pages = years_menu[0].select('a')
+                        browser.get('https://www.oddsportal.com' + years_pages[0]['href'])
+                        content_browser = browser.page_source
+                        soup_liga = BS(content_browser, 'html.parser')
+                        breadcrump = soup_liga.select('#breadcrumb')
+                        breadcrump_a = breadcrump[0].select('a')
+                        sport = breadcrump_a[1].text
+                        country = breadcrump_a[2].text
+                        liga = breadcrump_a[3].text
+                        print('Страна ' + country)
+                        print('Чемпионат ' + liga)
+                        for page in years_pages:
+                            year_page = 'https://www.oddsportal.com' + page['href']
+                            print(year_page)
+                            browser.get(year_page)
+                            page_pagination = BS(browser.page_source, 'html.parser')
+                            pagination = page_pagination.select('#pagination')
+                            print('Страница 1')
+                            self.counter_match(year_page, browser, sport, country, liga)
+                            try:
+                                if pagination:
+                                    max_page = pagination[0].select('a')[-1]['x-page']
+                                    p = 2
+                                    while p != int(max_page):
+                                        print('Страница '+str(p))
+                                        year_page_add = 'https://www.oddsportal.com' + page[
+                                            'href'] + '#/page/%s/' % str(p)
+                                        self.counter_match(year_page_add, browser, sport, country, liga)
+                                        p += 1
+                            except TimeoutException:
+                                print('[EROR] TimeoutException')
+
+    def counter_match(self, url, browser, sport, country, liga):
+        print(url)
+        date = None
+        browser.get(url)
+        time.sleep(2)
+        content_browser = browser.page_source
+        soup_liga = BS(content_browser, 'html.parser')
+        table_matchs = soup_liga.select('#tournamentTable')[0]
+        trs = table_matchs.select('tr')
+        for tr in trs:
+            try:
+                if tr['class'] == ['center', 'nob-border']:
+                    date = tr.select('span')[0].text
+                elif 'deactivate' in tr['class']:
+                    if len(tr.select('span.live-odds-ico-prev')) == 0:
+                        # timematch = tr.select('td.table-time')[0].text
+                        # match_url = 'https://www.oddsportal.com' + tr.select('a')[0]['href']
+                        # game_name = tr.select('a')[0].text
+                        # print(game_name)
+                        # command1 = game_name.split(' - ')[0]
+                        # command2 = game_name.split(' - ')[1]
+                        # check_list = [command1, command2, match_url, date, timematch, sport, country, liga]
+                        self.count_games += 1
+                        print('Кол-во игр ' + str(self.count_games))
+            except KeyError:
+                print('[WARNING] Not odds')
+ParserInfo().start()
