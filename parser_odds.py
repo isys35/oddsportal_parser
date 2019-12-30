@@ -5,7 +5,7 @@ from selenium.webdriver.firefox.options import Options
 import sqlite3
 from selenium.webdriver.common.action_chains import ActionChains
 from selenium.common.exceptions import TimeoutException
-
+import time
 
 class Parser:
 
@@ -39,8 +39,11 @@ class Parser:
                         sport = breadcrump_a[1].text
                         country = breadcrump_a[2].text
                         liga = breadcrump_a[3].text
+                        print('Страна '+country)
+                        print('Чемпионат '+liga)
                         for page in years_pages:
                             year_page = 'https://www.oddsportal.com' + page['href']
+                            print(year_page)
                             browser.get(year_page)
                             page_pagination = BS(browser.page_source, 'html.parser')
                             pagination = page_pagination.select('#pagination')
@@ -48,10 +51,12 @@ class Parser:
                                 if len(pagination) == 0:
                                     self.get_liga_data_in_year(year_page, browser, sport, country, liga)
                                 else:
-                                    print('ok')
+                                    print('Страница 1')
+                                    self.get_liga_data_in_year(year_page, browser, sport, country, liga)
                                     max_page = pagination[0].select('a')[-1]['x-page']
                                     p = 2
                                     while p != int(max_page):
+                                        print('Страница '+str(p))
                                         year_page_add = 'https://www.oddsportal.com' + page[
                                             'href'] + '#/page/%s/' % str(p)
                                         self.get_liga_data_in_year(year_page_add, browser, sport, country, liga)
@@ -125,6 +130,7 @@ class Parser:
         print(url)
         date = None
         browser.get(url)
+        time.sleep(2)
         content_browser = browser.page_source
         soup_liga = BS(content_browser, 'html.parser')
         table_matchs = soup_liga.select('#tournamentTable')[0]

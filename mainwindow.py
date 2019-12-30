@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# Form implementation generated from reading ui file 'D:\Project\oddsportal_parser\design.ui'
+# Form implementation generated from reading ui file 'design.ui'
 #
 # Created by: PyQt5 UI code generator 5.13.2
 #
@@ -27,7 +27,7 @@ class Ui_MainWindow(object):
         self.scrollArea.setWidgetResizable(True)
         self.scrollArea.setObjectName("scrollArea")
         self.scrollAreaWidgetContents = QtWidgets.QWidget()
-        self.scrollAreaWidgetContents.setGeometry(QtCore.QRect(0, 0, 329, 656))
+        self.scrollAreaWidgetContents.setGeometry(QtCore.QRect(0, 0, 325, 649))
         self.scrollAreaWidgetContents.setObjectName("scrollAreaWidgetContents")
         self.verticalLayout = QtWidgets.QVBoxLayout(self.scrollAreaWidgetContents)
         self.verticalLayout.setObjectName("verticalLayout")
@@ -41,7 +41,7 @@ class Ui_MainWindow(object):
         self.label_10.setText("")
         self.label_10.setObjectName("label_10")
         self.horizontalLayoutWidget = QtWidgets.QWidget(self.centralwidget)
-        self.horizontalLayoutWidget.setGeometry(QtCore.QRect(20, 30, 331, 51))
+        self.horizontalLayoutWidget.setGeometry(QtCore.QRect(20, 30, 336, 51))
         self.horizontalLayoutWidget.setObjectName("horizontalLayoutWidget")
         self.horizontalLayout_5 = QtWidgets.QHBoxLayout(self.horizontalLayoutWidget)
         self.horizontalLayout_5.setContentsMargins(0, 0, 0, 0)
@@ -53,7 +53,7 @@ class Ui_MainWindow(object):
         self.pushButton_5.setObjectName("pushButton_5")
         self.horizontalLayout_5.addWidget(self.pushButton_5)
         self.horizontalLayoutWidget_2 = QtWidgets.QWidget(self.centralwidget)
-        self.horizontalLayoutWidget_2.setGeometry(QtCore.QRect(370, 30, 701, 121))
+        self.horizontalLayoutWidget_2.setGeometry(QtCore.QRect(370, 30, 701, 128))
         self.horizontalLayoutWidget_2.setObjectName("horizontalLayoutWidget_2")
         self.horizontalLayout_6 = QtWidgets.QHBoxLayout(self.horizontalLayoutWidget_2)
         self.horizontalLayout_6.setContentsMargins(0, 0, 0, 0)
@@ -136,7 +136,7 @@ class Ui_MainWindow(object):
         self.tableWidget = QtWidgets.QTableWidget(self.centralwidget)
         self.tableWidget.setGeometry(QtCore.QRect(370, 160, 701, 611))
         self.tableWidget.setObjectName("tableWidget")
-        self.tableWidget.setColumnCount(5)
+        self.tableWidget.setColumnCount(6)
         self.tableWidget.setRowCount(0)
         item = QtWidgets.QTableWidgetItem()
         self.tableWidget.setHorizontalHeaderItem(0, item)
@@ -148,6 +148,8 @@ class Ui_MainWindow(object):
         self.tableWidget.setHorizontalHeaderItem(3, item)
         item = QtWidgets.QTableWidgetItem()
         self.tableWidget.setHorizontalHeaderItem(4, item)
+        item = QtWidgets.QTableWidgetItem()
+        self.tableWidget.setHorizontalHeaderItem(5, item)
         MainWindow.setCentralWidget(self.centralwidget)
 
         self.retranslateUi(MainWindow)
@@ -177,6 +179,8 @@ class Ui_MainWindow(object):
         item = self.tableWidget.horizontalHeaderItem(2)
         item.setText(_translate("MainWindow", "Дата"))
         item = self.tableWidget.horizontalHeaderItem(3)
-        item.setText(_translate("MainWindow", "Результат "))
+        item.setText(_translate("MainWindow", "Страна"))
         item = self.tableWidget.horizontalHeaderItem(4)
+        item.setText(_translate("MainWindow", "Результат "))
+        item = self.tableWidget.horizontalHeaderItem(5)
         item.setText(_translate("MainWindow", "Перейти на сайт"))

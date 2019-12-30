@@ -49,8 +49,8 @@
          <rect>
           <x>0</x>
           <y>0</y>
-          <width>329</width>
-          <height>656</height>
+          <width>325</width>
+          <height>649</height>
          </rect>
         </property>
         <layout class="QVBoxLayout" name="verticalLayout">
@@ -81,7 +81,7 @@
      <rect>
       <x>20</x>
       <y>30</y>
-      <width>331</width>
+      <width>336</width>
       <height>51</height>
      </rect>
     </property>
@@ -108,7 +108,7 @@
       <x>370</x>
       <y>30</y>
       <width>701</width>
-      <height>121</height>
+      <height>128</height>
      </rect>
     </property>
     <layout class="QHBoxLayout" name="horizontalLayout_6">
@@ -281,6 +281,11 @@
     <column>
      <property name="text">
       <string>Дата</string>
+     </property>
+    </column>
+    <column>
+     <property name="text">
+      <string>Страна</string>
      </property>
     </column>
     <column>
