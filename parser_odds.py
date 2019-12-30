@@ -237,6 +237,7 @@ class Parser:
 class ParserInfo:
     def __init__(self):
         self.count_games = 0
+        self.coutry_info = {}
 
     def start(self):
         options = Options()
@@ -313,8 +314,15 @@ class ParserInfo:
                         # command1 = game_name.split(' - ')[0]
                         # command2 = game_name.split(' - ')[1]
                         # check_list = [command1, command2, match_url, date, timematch, sport, country, liga]
+                        if not country in self.coutry_info:
+                            self.coutry_info[country] = 1
+                        else:
+                            self.coutry_info[country] += 1
                         self.count_games += 1
                         print('Кол-во игр ' + str(self.count_games))
+                        print(self.coutry_info)
             except KeyError:
                 print('[WARNING] Not odds')
+
+
 ParserInfo().start()
