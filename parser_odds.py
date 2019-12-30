@@ -82,6 +82,7 @@ class Parser:
             return False
 
     def get_match_data(self, url: str, browser):
+        start = time.time()
         browser.get(url)
         content_match = browser.page_source
         soup_liga = BS(content_match, 'html.parser')
@@ -121,9 +122,15 @@ class Parser:
                         odds_list.append(open_odds)
                         print(open_odds)
                 bets_dict[bookmaker] = odds_list
+            end = time.time()
+            time_compl = end-start
+            print('[INFO]Время получения данных из игры %s' %str(time_compl))
             return [result, bets_dict]
         else:
             bets_dict = {}
+            end = time.time()
+            time_compl = end - start
+            print('[INFO]Время получения данных из игры %s' % str(time_compl))
             return [result, bets_dict]
 
     def get_liga_data_in_year(self, url, browser, sport, country, liga):

@@ -172,6 +172,7 @@ class Ui_MainWindow(object):
         self.label_5.setText(_translate("MainWindow", "X"))
         self.label_7.setText(_translate("MainWindow", "П2"))
         self.pushButton_2.setText(_translate("MainWindow", "Показать матчи"))
+        self.tableWidget.setSortingEnabled(False)
         item = self.tableWidget.horizontalHeaderItem(0)
         item.setText(_translate("MainWindow", "Комманда1"))
         item = self.tableWidget.horizontalHeaderItem(1)

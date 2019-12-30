@@ -268,6 +268,9 @@
       <height>611</height>
      </rect>
     </property>
+    <property name="sortingEnabled">
+     <bool>false</bool>
+    </property>
     <column>
      <property name="text">
       <string>Комманда1</string>

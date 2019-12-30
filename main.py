@@ -3,7 +3,7 @@
 import sys
 import sqlite3
 from PyQt5 import QtCore, QtGui, QtWidgets
-from PyQt5.QtCore import QThread
+from PyQt5.QtCore import QThread,QSize
 import requests
 from bs4 import BeautifulSoup as BS
 from selenium import webdriver
@@ -112,6 +112,7 @@ class MainApp(QtWidgets.QMainWindow, mainwindow.Ui_MainWindow):
                 cur.execute(query, [game_id])
                 game_data = [el for el in cur.fetchone()]
                 self.games.append(game_data)
+        self.update_table()
         p1_out = 0
         p2_out = 0
         x_out = 0
@@ -150,6 +151,7 @@ class MainApp(QtWidgets.QMainWindow, mainwindow.Ui_MainWindow):
                 if game[9] not in self.liga_dict[game[8]]:
                     self.liga_dict[game[8]].append(game[9])
         print(self.liga_dict)
+
         #self.comboBox.addItems(countrys)
         cur.close()
 
@@ -182,6 +184,42 @@ class MainApp(QtWidgets.QMainWindow, mainwindow.Ui_MainWindow):
         self.parsing = ParsingThread()
         self.parsing.start()
 
+    def update_table(self):
+        self.tableWidget.clearContents()
+        self.tableWidget.setRowCount(len(self.games))
+        for game in self.games:
+            item_command1 = QtWidgets.QTableWidgetItem()
+            item_command1.setText(game[1])
+            self.tableWidget.setItem(self.games.index(game), 0, item_command1)
+            item_command2 = QtWidgets.QTableWidgetItem()
+            item_command2.setText(game[2])
+            self.tableWidget.setItem(self.games.index(game), 1, item_command2)
+            item_date = QtWidgets.QTableWidgetItem()
+            item_date.setText(game[4])
+            self.tableWidget.setItem(self.games.index(game), 2, item_date)
+            self.tableWidget.resizeColumnToContents(2)
+            item_country = QtWidgets.QTableWidgetItem()
+            item_country.setText(game[8])
+            self.tableWidget.setItem(self.games.index(game), 3, item_country)
+            self.tableWidget.resizeColumnToContents(3)
+            item_result = QtWidgets.QTableWidgetItem()
+            item_result.setText(game[6])
+            self.tableWidget.setItem(self.games.index(game), 4, item_result)
+            self.tableWidget.resizeColumnToContents(4)
+            item_clicked = QtWidgets.QTableWidgetItem()
+            item_clicked.setText('click')
+            self.tableWidget.setItem(self.games.index(game), 5, item_clicked)
+            self.tableWidget.resizeColumnToContents(5)
+        self.tableWidget.cellClicked.connect(lambda row, column: self.open_page_in_browser(row, column))
+
+    def open_page_in_browser(self, row, column):
+        if column == 5:
+            options = Options()
+            options.headless = False
+            url = self.games[row][3]
+            print(url)
+            browser = webdriver.Firefox(options=options)
+            browser.get(url)
 
 class Dialog(QtWidgets.QDialog,dialog.Ui_Dialog):
     def __init__(self):
@@ -189,39 +227,53 @@ class Dialog(QtWidgets.QDialog,dialog.Ui_Dialog):
         self.setupUi(self)
 
     def update_games(self, games):
+        self.tableWidget.clearContents()
         self.tableWidget.setRowCount(len(games))
-        self.tableWidget.itemClicked
         for game in games:
             item_index = QtWidgets.QTableWidgetItem()
             item_index.setText(str(games.index(game)))
             self.tableWidget.setVerticalHeaderItem(games.index(game), item_index)
+            #item_index.setSizeHint(QSize(10, 20))
             item_command1 = QtWidgets.QTableWidgetItem()
             item_command1.setText(game[1])
-            self.tableWidget.setItem(games.index(game), 0, item_command1)
+            self.tableWidget.setItem(games.index(game), 1, item_command1)
             item_command2 = QtWidgets.QTableWidgetItem()
             item_command2.setText(game[2])
-            self.tableWidget.setItem(games.index(game), 1, item_command2)
+            self.tableWidget.setItem(games.index(game), 2, item_command2)
             item_url = QtWidgets.QTableWidgetItem()
             item_url.setText(game[3])
-            self.tableWidget.setItem(games.index(game), 2, item_url)
+            self.tableWidget.setItem(games.index(game), 3, item_url)
             item_date = QtWidgets.QTableWidgetItem()
-            item_date.setText(game[4])
-            self.tableWidget.setItem(games.index(game), 3, item_date)
+            item_date.setText(game[4].rsplit(' ', 1)[0])
+            self.tableWidget.setItem(games.index(game), 5, item_date)
+            self.tableWidget.resizeColumnToContents(5)
+            item_year = QtWidgets.QTableWidgetItem()
+            item_year.setText(game[4].rsplit(' ', 1)[1])
+            self.tableWidget.setItem(games.index(game), 6, item_year)
+            self.tableWidget.resizeColumnToContents(6)
             item_time = QtWidgets.QTableWidgetItem()
             item_time.setText(game[5])
             self.tableWidget.setItem(games.index(game), 4, item_time)
+            self.tableWidget.resizeColumnToContents(4)
             item_result = QtWidgets.QTableWidgetItem()
             item_result.setText(game[6])
-            self.tableWidget.setItem(games.index(game), 5, item_result)
+            self.tableWidget.setItem(games.index(game), 9, item_result)
+            self.tableWidget.resizeColumnToContents(9)
             item_sport = QtWidgets.QTableWidgetItem()
             item_sport.setText(game[7])
-            self.tableWidget.setItem(games.index(game), 6, item_sport)
+            self.tableWidget.setItem(games.index(game), 0, item_sport)
+            self.tableWidget.resizeColumnToContents(0)
             item_country = QtWidgets.QTableWidgetItem()
             item_country.setText(game[8])
             self.tableWidget.setItem(games.index(game), 7, item_country)
+            self.tableWidget.resizeColumnToContents(7)
             item_liga = QtWidgets.QTableWidgetItem()
             item_liga.setText(game[9])
             self.tableWidget.setItem(games.index(game), 8, item_liga)
+            item_click = QtWidgets.QTableWidgetItem()
+            item_click.setText('click')
+            self.tableWidget.setItem(games.index(game), 10, item_click)
+            self.tableWidget.resizeColumnToContents(10)
 
 
 
